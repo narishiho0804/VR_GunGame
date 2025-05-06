@@ -5,60 +5,98 @@ using UnityEngine;
 
 public class PC_PlayerMove : MonoBehaviour
 {
+    public float walkSpeed = 20.0f;
+    public float runSpeed = 100.0f;
+
     private Rigidbody rb;
     private Animator animator;
-    private float speed = 15.0f;
+    private Vector3 moveDirection;
+
+    
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
     }
-    // Update is called once per frame
+    
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))// Wキーを押す。
+        Move();
+        Animate();
+        
+        
+    }
+
+    void Move()
+    {
+        
+       
+        moveDirection = Vector3.zero;
+
+        if (Input.GetKey(KeyCode.W))
         {
-            animator.SetBool("Walk", true);
-            
-            rb.AddForce(transform.forward * speed, ForceMode.Acceleration);
+           
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                rb.AddForce(transform.forward * runSpeed, ForceMode.Acceleration);
+            }
+            else
+            {
+                rb.AddForce(transform.forward * walkSpeed, ForceMode.Acceleration);
+            }
         }
         if (Input.GetKey(KeyCode.S))
         {
-            animator.SetBool("Back", true);
-            rb.AddForce(transform.forward * speed * -1, ForceMode.Acceleration);
+            rb.AddForce(transform.forward * walkSpeed * -1, ForceMode.Acceleration);
+            
         }
         if (Input.GetKey(KeyCode.D))
         {
-            animator.SetBool("WalkRight", true);
-            rb.AddForce(transform.right * speed, ForceMode.Acceleration);
+            rb.AddForce(transform.right * walkSpeed, ForceMode.Acceleration);
             
         }
         if (Input.GetKey(KeyCode.A))
         {
-            animator.SetBool("WalkLeft", true);
-            rb.AddForce(transform.right * speed * -1, ForceMode.Acceleration);
-        }
-
-
-
-
-        if (Input.GetKeyUp(KeyCode.W))// Wキーを押す。
-        {
-            animator.SetBool("Walk", false);
+            rb.AddForce(transform.right * walkSpeed * -1, ForceMode.Acceleration);
             
         }
-        if (Input.GetKeyUp(KeyCode.S))
+    }
+
+    void Animate()
+    {
+        // 状態リセット
+        animator.SetBool("Walk", false);
+        animator.SetBool("Run", false);
+        animator.SetBool("Back", false);
+        animator.SetBool("WalkRight", false);
+        animator.SetBool("WalkLeft", false);
+
+        // 入力に応じてアニメを切り替える
+        if (Input.GetKey(KeyCode.W))
         {
-            animator.SetBool("Back", false);
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                animator.SetBool("Run", true);
+            }
+            else
+            {
+                animator.SetBool("Walk", true);
+            }
         }
-        if (Input.GetKeyUp(KeyCode.D))
+        if (Input.GetKey(KeyCode.S))
         {
-            animator.SetBool("WalkRight", false);
+            animator.SetBool("Back", true);
         }
-        if (Input.GetKeyUp(KeyCode.A))
+        if (Input.GetKey(KeyCode.D))
         {
-            animator.SetBool("WalkLeft", false);
+            animator.SetBool("WalkRight", true);
         }
+        if (Input.GetKey(KeyCode.A))
+        {
+            animator.SetBool("WalkLeft", true);
+        }
+
     }
 }
