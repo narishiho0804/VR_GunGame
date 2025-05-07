@@ -36,8 +36,6 @@ public class PC_PlayerMove : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W))
         {
-           
-
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 rb.AddForce(transform.forward * runSpeed, ForceMode.Acceleration);
@@ -47,20 +45,55 @@ public class PC_PlayerMove : MonoBehaviour
                 rb.AddForce(transform.forward * walkSpeed, ForceMode.Acceleration);
             }
         }
-        if (Input.GetKey(KeyCode.S))
-        {
-            rb.AddForce(transform.forward * walkSpeed * -1, ForceMode.Acceleration);
-            
-        }
         if (Input.GetKey(KeyCode.D))
         {
-            rb.AddForce(transform.right * walkSpeed, ForceMode.Acceleration);
-            
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                rb.AddForce(transform.right * runSpeed, ForceMode.Acceleration);
+            }
+            else
+            {
+                rb.AddForce(transform.right * walkSpeed, ForceMode.Acceleration);
+            }
+
         }
         if (Input.GetKey(KeyCode.A))
         {
-            rb.AddForce(transform.right * walkSpeed * -1, ForceMode.Acceleration);
-            
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                rb.AddForce(transform.right * runSpeed * -1, ForceMode.Acceleration);
+            }
+            else
+            {
+                rb.AddForce(transform.right * walkSpeed* -1, ForceMode.Acceleration);
+            }
+
+        }
+
+
+
+        if (Input.GetKey(KeyCode.W) && (Input.GetKey(KeyCode.D)))
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                //rb.AddForce(transform.right * runSpeed * -1, ForceMode.Acceleration);
+            }
+            else
+            {
+                //rb.AddForce(transform.right * walkSpeed * -1, ForceMode.Acceleration);
+            }
+        }
+
+        if (Input.GetKey(KeyCode.W) && (Input.GetKey(KeyCode.D)))
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                rb.AddForce(transform.forward + transform.right * runSpeed, ForceMode.Acceleration);
+            }
+            else
+            {
+                rb.AddForce(transform.forward + transform.right * walkSpeed, ForceMode.Acceleration);
+            }
         }
     }
 
@@ -68,10 +101,12 @@ public class PC_PlayerMove : MonoBehaviour
     {
         // 状態リセット
         animator.SetBool("Walk", false);
-        animator.SetBool("Run", false);
-        animator.SetBool("Back", false);
         animator.SetBool("WalkRight", false);
         animator.SetBool("WalkLeft", false);
+        animator.SetBool("Run", false);
+        animator.SetBool("RunRight", false);
+        animator.SetBool("RunLeft", false);
+
 
         // 入力に応じてアニメを切り替える
         if (Input.GetKey(KeyCode.W))
@@ -85,17 +120,40 @@ public class PC_PlayerMove : MonoBehaviour
                 animator.SetBool("Walk", true);
             }
         }
-        if (Input.GetKey(KeyCode.S))
-        {
-            animator.SetBool("Back", true);
-        }
+        
         if (Input.GetKey(KeyCode.D))
         {
-            animator.SetBool("WalkRight", true);
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                animator.SetBool("RunRight", true);
+            }
+            else
+            {
+                animator.SetBool("WalkRight", true);
+            }
         }
         if (Input.GetKey(KeyCode.A))
         {
-            animator.SetBool("WalkLeft", true);
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                animator.SetBool("RunLeft", true);
+            }
+            else
+            {
+                animator.SetBool("WalkLeft", true);
+            }
+        }
+
+        if (Input.GetKey(KeyCode.W) && (Input.GetKey(KeyCode.D)))
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                animator.SetBool("WalkDiagonallyRight", true);
+            }
+            else
+            {
+                animator.SetBool("RunDiagonallyRight", true);
+            }
         }
 
     }
